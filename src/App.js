@@ -1,24 +1,38 @@
-import logo from './logo.svg';
+
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import './App.css';
+import {Task} from './Task'
+
+
 
 function App() {
+
+
+  const [users,setUsers] =useState([]);
+
+ // Get API Implement
+  useEffect(()=>{
+  async function getData(){
+    const res=await axios.get("https://jsonplaceholder.typicode.com/comments");
+    const datas= await res.data;
+    setUsers(datas);
+
+    }
+    getData();
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <>
+
+   <Task />
+   
+ {users.map((user)=>{
+  return (
+    <li key={user.id}>{user.email}</li>
+  )
+ })}
+   </>
   );
 }
 
